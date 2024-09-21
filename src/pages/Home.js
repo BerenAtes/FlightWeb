@@ -13,6 +13,7 @@ import { RiFlightTakeoffFill } from "react-icons/ri";
 import { RiFlightLandFill } from "react-icons/ri";
 import { useState } from "react";
 import { MdOutlineFace3 } from "react-icons/md";
+import { BsPass } from "react-icons/bs";
 
 function Home() {
   const [selectedSort, setSelectedSort] = useState("");
@@ -22,28 +23,30 @@ function Home() {
   const toggleDropdown = () => setIsDropdownOpen((prev) => !prev);
   return (
     <div className="min-h-screen bg-purple-200 p-8 flex">
-      <div className="max-w-full mx-auto bg-gray-200 p-6 rounded-lg shadow-lg flex flex-col md:flex-row items-center">
-        <div className="flex-1">
-          <div className="flex items-center mb-6">
-            <div className="flex items-center w-10 h-10 bg-purple-600 rounded-full p-3 m-1">
+      <div className="max-w-full mx-auto bg-gray-200 p-6 rounded-lg shadow-lg flex flex-col md:flex-row">
+        <div className="flex-1 ">
+          <div className="flex justify-normal items-center mb-6">
+            <div className="flex items-center  w-10 h-10  bg-purple-600 rounded-full p-3 m-1">
               <MdFlight color="white" size={24} />
             </div>
-            <h1 className="text-xl font-bold text-gray-800 ml-2">
-              PLANE SCAPE
-            </h1>
-          </div>
-          <div className="flex items-center space-x-4 ml-auto">
-            <div className="flex items-center space-x-2">
-              <MdOutlineDiscount className="text-purple-600" />
-              <button className="px-4 py-2 text-gray-600 font-bold  rounded-lg">
+            <h1 className="text-xl font-bold text-gray-800">PLANE SCAPE</h1>
+            <div className="flex items-center justify-end space-x-1 ml-40">
+              <MdOutlineDiscount className="text-purple-600 " />
+
+              <button className="px-4 py-2  text-gray-600 font-bold rounded-lg">
                 Deals
               </button>
-            </div>
-            <div className="flex items-center space-x-2">
               <FaEarthAfrica className="text-purple-600" />
               <button className="px-4 py-2 text-gray-600 font-bold rounded-lg">
                 Discover
               </button>
+              <BsPass className="text-purple-600 font-bold" />
+              <Link
+                to="/my-flights"
+                className="text-gray-700 font-bold underline px-4 py-2s"
+              >
+                My Flights
+              </Link>
               <div className="flex items-center space-x-2">
                 <div className="flex items-center justify-center w-8 h-8 bg-white rounded-full">
                   <MdOutlineFace3 className="text-purple-600 text-ml" />
@@ -252,9 +255,13 @@ function Home() {
         </div>
 
         <div className="flex flex-col items-center mt-20">
-          {/* Car Rentals */}
           <div className="relative w-64 h-64 m-4 rounded-lg shadow-lg overflow-hidden group">
-            <img src={car} alt="Car" className="w-full h-full object-cover" />
+            <img
+              src={car}
+              alt="Car"
+              className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+            />
+
             <a
               href="#"
               className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white text-center py-2 group-hover:bg-opacity-70 transition-all duration-300"
@@ -269,7 +276,7 @@ function Home() {
             <img
               src={hotel}
               alt="Hotel"
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover hover:scale-105"
             />
             <a
               href="#"
@@ -284,7 +291,7 @@ function Home() {
             <img
               src={travel}
               alt="Travel"
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover hover:scale-105"
             />
             <a
               href="#"
