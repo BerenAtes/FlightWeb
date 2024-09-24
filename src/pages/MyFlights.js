@@ -7,9 +7,17 @@ import { GiMoebiusTriangle } from "react-icons/gi";
 import { BiShapeTriangle } from "react-icons/bi";
 import { GiShatteredHeart } from "react-icons/gi";
 import { GiRoundShield } from "react-icons/gi";
+import { useNavigate } from "react-router-dom";
+import { RiFlightLandLine } from "react-icons/ri";
+import { MdFlightTakeoff } from "react-icons/md";
 
-const MyFlights = () => {
+const MyFlights = ({ selectedFlights = [] }) => {
   const [rating, setRating] = useState(0);
+  const navigate = useNavigate();
+
+  const ratingChanged = (newRating) => {
+    setRating(newRating);
+  };
 
   const flights = [
     {
@@ -71,10 +79,6 @@ const MyFlights = () => {
       },
     },
   ];
-  const ratingChanged = (newRating) => {
-    setRating(newRating);
-    console.log(newRating);
-  };
 
   return (
     <div className=" shadow-lg rounded-lg mt-4 ">
@@ -96,7 +100,7 @@ const MyFlights = () => {
           <button className="flex-1 min-w-[100px] px-4 py-2 hover:bg-gray-200 text-gray-600 font-bold rounded-lg border border-gray-300 text-sm">
             Amenities
           </button>
-          <button className="flex-1 min-w-[100px] px-4 py-2 hover:bg-blue-200 text-blue-500 font-bold rounded-lg flex items-center text-sm">
+          <button className="flex-1 min-w-[100px] px-4 py-2 hover:bg-blue-200 text-purple-500 font-bold rounded-lg flex items-center text-sm">
             Edit Search
             <MdOutlineArrowDropDown className="ml-1" />{" "}
           </button>
@@ -146,6 +150,12 @@ const MyFlights = () => {
               value={rating}
               isHalf={true}
             />
+            <button
+              onClick={() => navigate("/")} // Ana sayfaya yönlendir
+              className="px-4 py-2 ml-4 mt-4 text-sm mb-4 text-white bg-purple-500 rounded-lg hover:bg-purple-600"
+            >
+              Back to Home Page
+            </button>
           </div>
         </div>
       </div>
@@ -165,61 +175,63 @@ const MyFlights = () => {
           </div>
         </div>
 
-        <div className="bg-white  ">
-          {flights.map((flight, index) => (
-            <div
-              key={index}
-              className="border-b border-gray-200 py-4 mb-4 shadow-lg rounded-lg"
-            >
-              {" "}
-              <div className="flex justify-between items-center m-4 p-4  hover:bg-gray-100">
-                <div className="">
-                  <div className="flex flex-row m-3 p-3">
-                    <p>{flight.logo}</p>
-                    <p className="text-gray-500  text-2xl">{flight.time}</p>
+        <div className="bg-white">
+          {selectedFlights.length === 0 ? (
+            <p className="text-center text-gray-500">No flights selected</p>
+          ) : (
+            selectedFlights.map((flight, index) => (
+              <div
+                key={index}
+                className="border-b border-gray-200 py-4 mb-4 shadow-lg rounded-lg"
+              >
+                <div className="flex flex-col p-4">
+                  {/* Uçuş Başlığı */}
+                  <h2 className="text-xl font-bold text-gray-800 mb-2">
+                    {`${flight.prefixICAO || "Bilinmiyor"} - ${
+                      flight.route.destinations[0] || "Bilinmiyor"
+                    }`}
+                  </h2>
+                  <div className="flex p-4 space-x-4 ">
+                    {" "}
+                    <div className="text-sm text-gray-500 mb-1">
+                      <MdFlightTakeoff className="text-purple-600" />
+                      {` ${new Date(flight.scheduleDateTime).toLocaleTimeString(
+                        [],
+                        {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        }
+                      )}`}
+                    </div>
+                    <div className="text-sm text-gray-600 mb-2 flex items-center justify-between mb-2 font-bold">{`Airline Code: ${
+                      flight.prefixIATA || flight.prefixICAO || "Bilinmiyor"
+                    }`}</div>
+                    <div className="text-sm text-gray-500 mb-4">
+                      <RiFlightLandLine className="text-purple-600" />
+                      {` ${new Date(
+                        flight.estimatedLandingTime
+                      ).toLocaleTimeString([], {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}`}
+                    </div>
+                    {/* Uçuş Numarası ve Durumu */}
+                    <div className="flex items-center justify-between mb-2">
+                      <p className="text-sm text-gray-700">{`Flight number: ${
+                        flight.flightNumber || "Bilinmiyor"
+                      }`}</p>
+                    </div>
                   </div>
-                  <div className="flex flex-row space-x-16">
-                    <div className="flex flex-col">
-                      <p className="text-gray-500 text-sm font-bold">
-                        {flight.airline}
-                      </p>
-                      <p className="text-blue-600 text-sm">
-                        Flight Details
-                        <MdOutlineArrowDropDown className="ml-1 text-blue-600" />{" "}
-                      </p>
-                    </div>
-                    <div className="flex flex-col">
-                      <p className="text-gray-500 text-sm font-bold">Nonstop</p>
-                      <p className="text-gray-500">{flight.duration}</p>
-                    </div>
-
-                    <div className="flex flex-col">
-                      <p className="text-gray-500 text-sm font-bold">
-                        {flight.route}
-                      </p>
-                      <p className="text-gray-500 text-sm">
-                        {flight.flightNumber}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex space-x-4">
-                  {Object.keys(flight.prices).map((key, idx) => (
-                    <div
-                      key={idx}
-                      className="text-center border border-gray-300 p-2 rounded-lg shadow-sm"
-                    >
-                      {" "}
-                      <p className="text-gray-500 font-bold">
-                        {flight.prices[key]}
-                      </p>
-                      <p className="text-gray-400 capitalize">{key}</p>
-                    </div>
-                  ))}
+                  <p className="text-sm text-gray-600 mb-4 font-bold">{`Date: ${new Date(
+                    flight.scheduleDateTime
+                  ).toLocaleDateString()}`}</p>
+                  <p className="text-lg font-medium text-purple-600">
+                    {`Price: $${flight.airlineCode || "Bilinmiyor"}`}
+                  </p>
                 </div>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </div>
     </div>
